@@ -86,6 +86,10 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
   );
 };
 
-export const Dialog: React.FC<DialogProps> = () => {
-  return ReactDOM.createPortal(InternalDialog, document.body);
+const Dialog: any = () => ReactDOM.createPortal(InternalDialog, document.body);
+
+Dialog.showModal = (props: DialogProps) => {
+  return ReactDOM.render(<InternalDialog {...props} />, document.body);
 };
+
+export { Dialog };
