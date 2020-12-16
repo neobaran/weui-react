@@ -1,5 +1,6 @@
 {
-  "name": "@neobaran/weui-react",
+  "name": "nb-react-weui",
+  "description": "weui for react",
   "version": "0.0.1",
   "author": "neobaran",
   "license": "MIT",
