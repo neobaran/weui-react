@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 
 export interface DialogProps {
-  title?: React.ReactNode | string;
-  content?: React.ReactNode | string;
+  title?: React.ReactNode;
+  content?: React.ReactNode;
   visible?: boolean;
   showCancel?: boolean;
   confirmText?: React.ReactNode;
@@ -40,56 +40,66 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
   };
 
   return (
-    <CSSTransition in={visible} timeout={300}>
-      <div className="weui-mask" onClick={handleClose}></div>
-      <div className="weui-dialog">
-        {title && (
-          <div className="weui-dialog__hd">
-            <strong className="weui-dialog__title">{title}</strong>
-          </div>
-        )}
-        <div className="weui-dialog__bd">{content}</div>
-        <div className="weui-dialog__ft">
-          {showCancel && (
+    <CSSTransition
+      in={visible}
+      timeout={300}
+      classNames="nb-fade"
+      unmountOnExit
+    >
+      <div>
+        <div className="weui-mask" onClick={handleClose}></div>
+        <div className="weui-dialog">
+          {title && (
+            <div className="weui-dialog__hd">
+              <strong className="weui-dialog__title">{title}</strong>
+            </div>
+          )}
+          <div className="weui-dialog__bd">{content}</div>
+          <div className="weui-dialog__ft">
+            {showCancel && (
+              <a
+                {...props.cancelProps}
+                className={classNames(
+                  "weui-dialog__btn",
+                  "weui-dialog__btn_default",
+                  props.cancelProps?.className
+                )}
+                onClick={(e) => {
+                  onCancel && onCancel(e);
+                  handleClose(e);
+                }}
+              >
+                {cancelText}
+              </a>
+            )}
             <a
-              {...props.cancelProps}
+              {...props.confirmProps}
               className={classNames(
                 "weui-dialog__btn",
-                "weui-dialog__btn_default",
-                props.cancelProps?.className
+                "weui-dialog__btn_primary",
+                props.confirmProps?.className
               )}
               onClick={(e) => {
-                onCancel && onCancel(e);
+                onConfirm && onConfirm(e);
                 handleClose(e);
               }}
             >
-              {cancelText}
+              {confirmText}
             </a>
-          )}
-          <a
-            {...props.confirmProps}
-            className={classNames(
-              "weui-dialog__btn",
-              "weui-dialog__btn_primary",
-              props.confirmProps?.className
-            )}
-            onClick={(e) => {
-              onConfirm && onConfirm(e);
-              handleClose(e);
-            }}
-          >
-            {confirmText}
-          </a>
+          </div>
         </div>
       </div>
     </CSSTransition>
   );
 };
 
-const Dialog: any = () => ReactDOM.createPortal(InternalDialog, document.body);
+const Dialog: any = (props: DialogProps) =>
+  ReactDOM.createPortal(<InternalDialog {...props} />, document.body);
 
-Dialog.showModal = (props: DialogProps) => {
-  return ReactDOM.render(<InternalDialog {...props} />, document.body);
+Dialog.show = (props: DialogProps) => {
+  const root = document.createElement("div");
+  document.body.appendChild(root);
+  return ReactDOM.render(<InternalDialog {...props} visible={true} />, root);
 };
 
 export { Dialog };

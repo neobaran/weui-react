@@ -1,0 +1,22 @@
+@import "weui";
+
+body {
+  color: var(--weui-FG-0);
+}
+
+.nb-fade {
+  &-enter {
+    opacity: 0;
+    transition: opacity 0.3s;
+    &-active {
+      opacity: 1;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    transition: opacity 0.3s;
+    &-active {
+      opacity: 0;
+    }
+  }
+}
