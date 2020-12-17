@@ -1,9 +1,9 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
 export interface BaseButtonProps {
-  type?: "default" | "primary" | "warn";
-  size?: "default" | "cell" | "mini";
+  type?: 'default' | 'primary' | 'warn';
+  size?: 'default' | 'cell' | 'mini';
   disabled: boolean;
   loading?: boolean;
   icon?: React.ReactNode;
@@ -15,34 +15,36 @@ export type AnchorButtonProps = {
   target?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
 } & BaseButtonProps &
-  Omit<React.AnchorHTMLAttributes<any>, "type" | "onClick">;
+Omit<React.AnchorHTMLAttributes<any>, 'type' | 'onClick'>;
 
 export type NativeButtonProps = {
-  htmlType?: "submit" | "button" | "reset";
+  htmlType?: React.ButtonHTMLAttributes<any>['type'];
   onClick?: React.MouseEventHandler<HTMLElement>;
 } & BaseButtonProps &
-  Omit<React.ButtonHTMLAttributes<any>, "type" | "onClick">;
+Omit<React.ButtonHTMLAttributes<any>, 'type' | 'onClick'>;
 
 export type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>;
 
 export const Button: React.FC<ButtonProps> = (props) => {
   const {
-    type = "default",
-    size = "default",
+    type = 'default',
+    size = 'default',
     disabled = false,
     loading = false,
-    className,
     icon,
     htmlType,
+    href,
+    className,
+    children,
     ...rest
   } = props;
 
-  const isCell = size === "cell";
+  const isCell = size === 'cell';
 
-  const prefixCls = isCell ? "weui-btn_cell" : "weui-btn";
+  const prefixCls = isCell ? 'weui-btn_cell' : 'weui-btn';
 
   const handleClick = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>,
   ) => {
     const { onClick } = props;
     if (loading) {
@@ -54,31 +56,30 @@ export const Button: React.FC<ButtonProps> = (props) => {
     }
     if (onClick) {
       (onClick as React.MouseEventHandler<
-        HTMLButtonElement | HTMLAnchorElement
+      HTMLButtonElement | HTMLAnchorElement
       >)(e);
     }
   };
 
   const classes = classNames(
     prefixCls,
-    `${prefixCls}${isCell ? "-" : "_"}${type}`,
-    { "weui-btn_loading": loading },
-    { "weui-btn_disabled": disabled },
-    className
+    `${prefixCls}${isCell ? '-' : '_'}${type}`,
+    { 'weui-btn_loading': loading },
+    { 'weui-btn_disabled': disabled },
+    className,
   );
 
-  const iconNode =
-    icon &&
-    React.isValidElement(icon) &&
-    React.cloneElement(icon, {
-      className: classNames(icon.props?.className, "weui-btn_cell__icon"),
+  const iconNode = icon
+    && React.isValidElement(icon)
+    && React.cloneElement(icon, {
+      className: classNames(icon.props?.className, 'weui-btn_cell__icon'),
     });
 
-  if (props.href !== undefined) {
+  if (href !== undefined) {
     return (
       <a {...rest} className={classes} onClick={handleClick}>
         {iconNode}
-        {props.children}
+        {children}
       </a>
     );
   }
@@ -91,7 +92,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       disabled={disabled}
     >
       {iconNode}
-      {props.children}
+      {children}
     </button>
   );
 };

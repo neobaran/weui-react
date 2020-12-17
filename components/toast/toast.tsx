@@ -1,11 +1,11 @@
 // import classNames from "classnames";
-import React from "react";
-import ReactDOM from "react-dom";
-import { CSSTransition } from "react-transition-group";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
 
 export interface ToastProps {
   title: React.ReactNode;
-  icon?: "success" | "warn" | "loading" | "none";
+  icon?: 'success' | 'warn' | 'loading' | 'none';
   image?: React.ReactNode;
   duration?: number;
   mask?: boolean;
@@ -16,18 +16,19 @@ export interface ToastProps {
 const InternalToast: React.FC<ToastProps> = (props) => {
   const {
     title,
-    icon = "success",
+    icon = 'success',
     image,
     duration = 1500,
     mask,
+    visible: propVisible,
     onClose,
   } = props;
 
-  const [visible, setVisible] = React.useState(props.visible || false);
+  const [visible, setVisible] = React.useState(propVisible || false);
 
   React.useEffect(() => {
-    setVisible(props.visible || false);
-  }, [props.visible]);
+    setVisible(propVisible || false);
+  }, [propVisible]);
 
   React.useEffect(() => {
     if (duration && visible) {
@@ -41,23 +42,23 @@ const InternalToast: React.FC<ToastProps> = (props) => {
     if (!visible) {
       onClose && onClose();
     }
-  }, [visible]);
+  }, [visible, onClose]);
 
   const iconNode = React.useMemo(() => {
     switch (icon) {
-      case "success":
-        return <i className="weui-icon_toast weui-icon-success-no-circle"></i>;
-      case "warn":
-        return <i className="weui-icon_toast weui-icon-warn"></i>;
-      case "loading":
+      case 'success':
+        return <i className="weui-icon_toast weui-icon-success-no-circle" />;
+      case 'warn':
+        return <i className="weui-icon_toast weui-icon-warn" />;
+      case 'loading':
         return (
           <span className="weui-icon_toast weui-primary-loading weui-primary-loading_transparent">
-            <span className="weui-primary-loading__dot"></span>
+            <span className="weui-primary-loading__dot" />
           </span>
         );
-      case "none":
+      case 'none':
       default:
-        return;
+        return <></>;
     }
   }, [icon]);
 
@@ -69,9 +70,9 @@ const InternalToast: React.FC<ToastProps> = (props) => {
       unmountOnExit
     >
       <div>
-        {mask && <div className="weui-mask_transparent"></div>}
+        {mask && <div className="weui-mask_transparent" />}
         <div className="weui-toast">
-          {image ? image : iconNode}
+          {image || iconNode}
           <p className="weui-toast__content">{title}</p>
         </div>
       </div>
@@ -79,13 +80,12 @@ const InternalToast: React.FC<ToastProps> = (props) => {
   );
 };
 
-const Toast: any = (props: ToastProps) =>
-  ReactDOM.createPortal(<InternalToast {...props} />, document.body);
+const Toast: any = (props: ToastProps) => ReactDOM.createPortal(<InternalToast {...props} />, document.body);
 
 Toast.show = (props: ToastProps) => {
-  const root = document.createElement("div");
+  const root = document.createElement('div');
   document.body.appendChild(root);
-  return ReactDOM.render(<InternalToast {...props} visible={true} />, root);
+  return ReactDOM.render(<InternalToast {...props} visible />, root);
 };
 
 export { Toast };

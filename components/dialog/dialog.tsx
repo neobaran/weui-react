@@ -1,7 +1,7 @@
-import classNames from "classnames";
-import React from "react";
-import ReactDOM from "react-dom";
-import { CSSTransition } from "react-transition-group";
+import classNames from 'classnames';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
 
 export interface DialogProps {
   title?: React.ReactNode;
@@ -9,9 +9,9 @@ export interface DialogProps {
   visible?: boolean;
   showCancel?: boolean;
   confirmText?: React.ReactNode;
-  confirmProps?: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick">;
+  confirmProps?: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'>;
   cancelText?: React.ReactNode;
-  cancelProps?: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick">;
+  cancelProps?: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'>;
   onConfirm?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   onCancel?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 }
@@ -20,21 +20,24 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
   const {
     title,
     content,
+    visible: propVisible,
     showCancel = true,
-    confirmText = "确定",
-    cancelText = "取消",
+    confirmText = '确定',
+    confirmProps,
+    cancelText = '取消',
+    cancelProps,
     onConfirm,
     onCancel,
   } = props;
 
-  const [visible, setVisible] = React.useState(props.visible || false);
+  const [visible, setVisible] = React.useState(propVisible || false);
 
   React.useEffect(() => {
-    setVisible(props.visible || false);
-  }, [props.visible]);
+    setVisible(propVisible || false);
+  }, [propVisible]);
 
   const handleClose = (
-    _: React.MouseEvent<HTMLDivElement | HTMLAnchorElement, MouseEvent>
+    _: React.MouseEvent<HTMLDivElement | HTMLAnchorElement, MouseEvent>,
   ) => {
     setVisible(false);
   };
@@ -47,7 +50,7 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
       unmountOnExit
     >
       <div>
-        <div className="weui-mask" onClick={handleClose}></div>
+        <div className="weui-mask" onClick={handleClose} />
         <div className="weui-dialog">
           {title && (
             <div className="weui-dialog__hd">
@@ -58,11 +61,11 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
           <div className="weui-dialog__ft">
             {showCancel && (
               <a
-                {...props.cancelProps}
+                {...cancelProps}
                 className={classNames(
-                  "weui-dialog__btn",
-                  "weui-dialog__btn_default",
-                  props.cancelProps?.className
+                  'weui-dialog__btn',
+                  'weui-dialog__btn_default',
+                  cancelProps?.className,
                 )}
                 onClick={(e) => {
                   onCancel && onCancel(e);
@@ -73,11 +76,11 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
               </a>
             )}
             <a
-              {...props.confirmProps}
+              {...confirmProps}
               className={classNames(
-                "weui-dialog__btn",
-                "weui-dialog__btn_primary",
-                props.confirmProps?.className
+                'weui-dialog__btn',
+                'weui-dialog__btn_primary',
+                confirmProps?.className,
               )}
               onClick={(e) => {
                 onConfirm && onConfirm(e);
@@ -93,13 +96,12 @@ const InternalDialog: React.FC<DialogProps> = (props) => {
   );
 };
 
-const Dialog: any = (props: DialogProps) =>
-  ReactDOM.createPortal(<InternalDialog {...props} />, document.body);
+const Dialog: any = (props: DialogProps) => ReactDOM.createPortal(<InternalDialog {...props} />, document.body);
 
 Dialog.show = (props: DialogProps) => {
-  const root = document.createElement("div");
+  const root = document.createElement('div');
   document.body.appendChild(root);
-  return ReactDOM.render(<InternalDialog {...props} visible={true} />, root);
+  return ReactDOM.render(<InternalDialog {...props} visible />, root);
 };
 
 export { Dialog };
