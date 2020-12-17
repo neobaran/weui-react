@@ -6,6 +6,7 @@ export interface ActionSheetProps {
   title?: React.ReactNode;
   itemList: Array<
   {
+    key?: React.Key
     children: React.ReactNode;
     warn?: boolean;
     onClick?: React.MouseEventHandler<HTMLElement>;

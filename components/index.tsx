@@ -11,5 +11,6 @@ export { HalfScreenDialog, HalfScreenDialogProps } from './half-screen-dialog';
 export { Icon, IconProps } from './icon';
 export { Loading, LoadingProps } from './loading';
 export { Loadmore, LoadmoreProps } from './loadmore';
+export { MediaBox, MediaBoxProps } from './mediabox';
 export { Panel, PanelProps } from './panel';
 export { Toast, ToastProps } from './toast';
