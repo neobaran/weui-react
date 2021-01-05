@@ -24,13 +24,20 @@ export type MediaBoxProps = Partial<AnchorMediaBoxProps & BaseMediaBoxProps>;
 
 export const MediaBox: React.FC<MediaBoxProps> = (props) => {
   const {
-    type = 'text', header, href, className, info,
+    type = 'text',
+    title,
+    description,
+    header,
+    href,
+    info,
+    className,
+    children,
+    ...ontherProps
   } = props;
 
   const Component = React.useMemo(() => (href ? 'a' : 'div'), [href]);
 
   const titleNode = React.useMemo(() => {
-    const { title } = props;
     if (typeof title === 'string') {
       return <h4 className="weui-media-box__title">{title}</h4>;
     }
@@ -40,10 +47,9 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
       });
     }
     return title;
-  }, [props]);
+  }, [title]);
 
   const descriptionNode = React.useMemo(() => {
-    const { description } = props;
     if (typeof description === 'string') {
       return <p className="weui-media-box__desc">{description}</p>;
     }
@@ -56,11 +62,11 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
       });
     }
     return description;
-  }, [props]);
+  }, [description]);
 
   return (
     <Component
-      {...props}
+      {...ontherProps}
       className={classNames(
         'weui-media-box',
         {
@@ -79,16 +85,19 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
             && !item.props.className
           ) {
             return React.cloneElement(item, {
+              key: item.key,
               className: 'weui-media-box__thumb',
             });
           }
           return item;
         })}
       </div>
-      <div className="weui-media-box__bd">
-        {titleNode}
-        {descriptionNode}
-      </div>
+      {(titleNode || descriptionNode) && (
+        <div className="weui-media-box__bd">
+          {titleNode}
+          {descriptionNode}
+        </div>
+      )}
       {!!info?.length && (
         <ul className="weui-media-box__info">
           {info.map((item) => (
@@ -103,6 +112,7 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
           ))}
         </ul>
       )}
+      {children}
     </Component>
   );
 };

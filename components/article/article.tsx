@@ -4,9 +4,9 @@ import React from 'react';
 export type ArticleProps = React.HTMLAttributes<HTMLElement>;
 
 export const Article: React.FC<ArticleProps> = (props) => {
-  const { className, children } = props;
+  const { className, children, ...ontherProps } = props;
   return (
-    <article {...props} className={classNames('weui-article', className)}>
+    <article {...ontherProps} className={classNames('weui-article', className)}>
       {children}
     </article>
   );

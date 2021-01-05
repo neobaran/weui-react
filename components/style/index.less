@@ -1,3 +1,4 @@
+@import "weui/src/style/base/variable/color.less";
 @import "weui";
 
 body {
@@ -18,5 +19,18 @@ body {
     &-active {
       opacity: 0;
     }
+  }
+}
+
+.weui-toptips {
+  display: block;
+  &_default {
+    background-color: @weuiBgColorDefault;
+  }
+  &_primary {
+    background-color: @weuiColorPrimary;
+  }
+  &_info {
+    background-color: var(--weui-BLUE);
   }
 }

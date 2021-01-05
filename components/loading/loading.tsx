@@ -14,10 +14,10 @@ export type LoadingProps = Omit<React.HTMLAttributes<HTMLElement>, 'color'> &
 (DefaultLoadingProps | PrimaryLoadingProps);
 
 export const Loading: React.FC<LoadingProps> = (props) => {
-  const { type, className } = props;
+  const { type, className, ...ontherProps } = props;
   return (
     <span
-      {...props}
+      {...ontherProps}
       className={classNames(
         type === 'primary' ? 'weui-primary-loading' : 'weui-loading',
         {

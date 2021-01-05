@@ -25,7 +25,7 @@ Omit<React.ButtonHTMLAttributes<any>, 'type' | 'onClick'>;
 
 export type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>;
 
-export const Button: React.FC<ButtonProps> = (props) => {
+const Button: React.FC<ButtonProps> = (props) => {
   const {
     type = 'default',
     size = 'default',
@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     href,
     className,
     children,
-    ...rest
+    ...ontherProps
   } = props;
 
   const isCell = size === 'cell';
@@ -66,6 +66,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     `${prefixCls}${isCell ? '-' : '_'}${type}`,
     { 'weui-btn_loading': loading },
     { 'weui-btn_disabled': disabled },
+    { 'weui-btn_mini': size === 'mini' },
     className,
   );
 
@@ -77,7 +78,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   if (href !== undefined) {
     return (
-      <a {...rest} className={classes} onClick={handleClick}>
+      <a {...ontherProps} className={classes} onClick={handleClick}>
         {iconNode}
         {children}
       </a>
@@ -85,7 +86,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   }
   return (
     <button
-      {...rest}
+      {...ontherProps}
       type={htmlType}
       className={classes}
       onClick={handleClick}
@@ -96,3 +97,29 @@ export const Button: React.FC<ButtonProps> = (props) => {
     </button>
   );
 };
+
+export interface ButtonAreaProps extends React.HTMLAttributes<any> {
+  direction?: 'vertical' | 'horizontal';
+}
+
+const Area: React.FC<ButtonAreaProps> = (props) => {
+  const {
+    direction = 'vertical', children, className, ...otherProps
+  } = props;
+  return (
+    <div
+      {...otherProps}
+      className={classNames(
+        'weui-btn-area',
+        { 'weui-btn-area_inline': direction === 'horizontal' },
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+(Button as any).Area = Area;
+
+export { Button };

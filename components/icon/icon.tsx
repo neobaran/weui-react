@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-export interface IconProps extends React.HTMLAttributes<HTMLElement> {
+export interface IconProps extends React.HTMLAttributes<any> {
   type:
   | 'circle'
   | 'download'
@@ -34,11 +34,11 @@ export interface IconProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Icon: React.FC<IconProps> = (props) => {
   const {
-    type, size = 'small', primary, className,
+    type, size = 'small', primary, className, ...ontherProps
   } = props;
   return (
     <i
-      {...props}
+      {...ontherProps}
       className={classNames(
         `weui-icon-${type}`,
         {

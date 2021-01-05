@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const typescript = require("gulp-typescript");
+
 const tsProject = typescript.createProject("./tsconfig.json", {
   declaration: true,
 });
@@ -7,8 +8,8 @@ const babel = require("gulp-babel");
 const del = require("del");
 
 const less = require("gulp-less");
-var postcss = require("gulp-postcss");
-var autoprefixer = require("autoprefixer");
+const postcss = require("gulp-postcss");
+const autoprefixer = require("autoprefixer");
 
 gulp.task("clean", () => del(["./dist/**/*"]));
 

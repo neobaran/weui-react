@@ -8,10 +8,11 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Footer: React.FC<FooterProps> = (props) => {
   const {
-    links, fixed, className, children,
+    links, fixed, className, children, ...ontherProps
   } = props;
   return (
     <footer
+      {...ontherProps}
       className={classNames(
         'weui-footer',
         {

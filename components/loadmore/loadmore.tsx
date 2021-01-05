@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Loading } from 'components/loading';
 import React from 'react';
+import { Loading } from '../loading';
 
 export interface LoadmoreProps extends React.HTMLAttributes<HTMLElement> {
   type: 'default' | 'line';
@@ -8,10 +8,13 @@ export interface LoadmoreProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const Loadmore: React.FC<LoadmoreProps> = (props) => {
-  const { type, tips, className } = props;
+  const {
+    type, tips, className, ...ontherProps
+  } = props;
 
   return (
     <div
+      {...ontherProps}
       className={classNames(
         'weui-loadmore',
         {

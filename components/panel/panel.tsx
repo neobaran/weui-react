@@ -9,11 +9,11 @@ export interface PanelProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Panel: React.FC<PanelProps> = (props) => {
   const {
-    header, children, footer, access, className,
+    header, children, footer, access, className, ...ontherProps
   } = props;
   return (
     <div
-      {...props}
+      {...ontherProps}
       className={classNames(
         'weui-panel',
         {

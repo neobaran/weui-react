@@ -1,5 +1,5 @@
 // import classNames from "classnames";
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
@@ -33,11 +33,29 @@ const InternalHalfScreenDialog: React.FC<HalfScreenDialogProps> = (props) => {
     children,
   } = props;
 
-  const [visible, setVisible] = React.useState(propVisible || false);
+  const [visible, setVisible] = useState(propVisible || false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setVisible(propVisible || false);
   }, [propVisible]);
+
+  const top = useRef(0);
+
+  useEffect(() => {
+    if (visible) {
+      top.current = Math.max(
+        document.body.scrollTop,
+        document.documentElement.scrollTop,
+      );
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${top.current}px`;
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      window.scrollTo(0, top.current);
+    }
+  }, [visible]);
 
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>,
@@ -54,7 +72,13 @@ const InternalHalfScreenDialog: React.FC<HalfScreenDialogProps> = (props) => {
       unmountOnExit
     >
       <div>
-        <div className="weui-mask" onClick={handleClose} />
+        <div
+          className="weui-mask"
+          onClick={handleClose}
+          onTouchStart={(e) => {
+            e.preventDefault();
+          }}
+        />
         <div className="weui-half-screen-dialog">
           <div className="weui-half-screen-dialog__hd">
             <div className="weui-half-screen-dialog__hd__side">
@@ -111,10 +135,7 @@ const HalfScreenDialog: any = (props: HalfScreenDialogProps) => ReactDOM.createP
 HalfScreenDialog.show = (props: HalfScreenDialogProps) => {
   const root = document.createElement('div');
   document.body.appendChild(root);
-  return ReactDOM.render(
-    <InternalHalfScreenDialog {...props} visible />,
-    root,
-  );
+  return ReactDOM.render(<InternalHalfScreenDialog {...props} visible />, root);
 };
 
 export { HalfScreenDialog };
