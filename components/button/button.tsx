@@ -50,7 +50,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     if (loading) {
       return;
     }
-    if (props.href !== undefined && disabled) {
+    if (href !== undefined && disabled) {
       e.preventDefault();
       return;
     }
@@ -78,7 +78,7 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   if (href !== undefined) {
     return (
-      <a {...ontherProps} className={classes} onClick={handleClick}>
+      <a {...ontherProps} className={classes} href={href} onClick={handleClick}>
         {iconNode}
         {children}
       </a>
