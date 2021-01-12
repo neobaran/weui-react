@@ -14,10 +14,18 @@ export interface MessageProps extends Omit<React.HTMLAttributes<any>, 'title'> {
 
 export const Message: React.FC<MessageProps> = (props) => {
   const {
-    type, title, description, buttons, tips, footer, children,
+    type,
+    title,
+    description,
+    buttons,
+    tips,
+    footer,
+    children,
+    className,
+    ...otherProps
   } = props;
   return (
-    <div className="weui-msg">
+    <div {...otherProps} className={classNames('weui-msg', className)}>
       {type && (
         <div className="weui-msg__icon-area">
           <Icon type={type} size="large" />
