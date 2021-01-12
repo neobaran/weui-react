@@ -1,7 +1,7 @@
 {
   "name": "nb-react-weui",
   "description": "weui for react",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "neobaran",
   "license": "MIT",
   "main": "./dist/index.js",

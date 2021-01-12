@@ -90,37 +90,33 @@ const PickerViewColumn: React.FC<{
     (offset - value) * rowHeight,
   );
 
-  const translateValue = useRef(translate);
+  const handleChange = useCallback(
+    (diff: number) => {
+      let translateValue = translate;
 
-  useEffect(() => {
-    translateValue.current = translate;
-  }, [translate]);
+      translateValue += diff || 0;
 
-  const handleChange = useCallback((diff: number) => {
-    if (!translateValue.current) {
-      translateValue.current = translate;
-    }
-    translateValue.current += diff || 0;
+      translateValue = Math.round(translateValue / rowHeight) * rowHeight;
 
-    translateValue.current = Math.round(translateValue.current / rowHeight) * rowHeight;
+      const max = offset * rowHeight;
+      const min = -(rowHeight * (childrenList.length - offset - 1));
 
-    const max = offset * rowHeight;
-    const min = -(rowHeight * (childrenList.length - offset - 1));
+      if (translateValue > max) {
+        translateValue = max;
+      }
+      if (translateValue < min) {
+        translateValue = min;
+      }
+      setTransition('all .3s');
+      setTranslate(translateValue);
 
-    if (translateValue.current > max) {
-      translateValue.current = max;
-    }
-    if (translateValue.current < min) {
-      translateValue.current = min;
-    }
-    setTransition('all .3s');
-    setTranslate(translateValue.current);
-
-    let v = 0 - (translateValue.current / rowHeight - offset);
-    v = Math.max(v, 0);
-    v = Math.min(v, childrenList.length);
-    onChange(v);
-  }, [childrenList.length, onChange, translate]);
+      let v = 0 - (translateValue / rowHeight - offset);
+      v = Math.max(v, 0);
+      v = Math.min(v, childrenList.length);
+      onChange(v);
+    },
+    [childrenList.length, onChange, translate],
+  );
 
   useEffect(() => {
     if (propValue > childrenList.length - 1) {
@@ -146,7 +142,7 @@ const PickerViewColumn: React.FC<{
         const diff = end - start.current;
 
         setTransition('all 0s');
-        setTranslate(translateValue.current + diff);
+        setTranslate((translateValue) => translateValue + diff);
 
         startTime.current = +new Date();
         points.current.push({ time: startTime.current, y: end });
@@ -206,7 +202,7 @@ const PickerViewColumn: React.FC<{
         className="weui-picker__content"
         style={{
           transition,
-          transform: `translate3d(0, ${translateValue.current}px, 0)`,
+          transform: `translate3d(0, ${translate}px, 0)`,
         }}
       >
         {childrenList}
