@@ -1,10 +1,13 @@
 {
   "name": "nb-react-weui",
   "description": "weui for react",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "neobaran",
   "license": "MIT",
   "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "gulp",
     "build": "gulp build"
