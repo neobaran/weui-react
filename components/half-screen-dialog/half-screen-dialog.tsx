@@ -1,9 +1,11 @@
 // import classNames from "classnames";
+import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
-export interface HalfScreenDialogProps {
+export interface HalfScreenDialogProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   title?: React.ReactNode;
   subTitle?: React.ReactNode;
   description?: React.ReactNode;
@@ -31,6 +33,8 @@ const InternalHalfScreenDialog: React.FC<HalfScreenDialogProps> = (props) => {
     visible: propVisible,
     onClose,
     children,
+    className,
+    ...otherProps
   } = props;
 
   const [visible, setVisible] = useState(propVisible || false);
@@ -79,7 +83,10 @@ const InternalHalfScreenDialog: React.FC<HalfScreenDialogProps> = (props) => {
             e.preventDefault();
           }}
         />
-        <div className="weui-half-screen-dialog">
+        <div
+          {...otherProps}
+          className={classNames('weui-half-screen-dialog', className)}
+        >
           <div className="weui-half-screen-dialog__hd">
             <div className="weui-half-screen-dialog__hd__side">
               <button className="weui-icon-btn" onClick={handleClose}>
