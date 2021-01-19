@@ -81,6 +81,7 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
   return (
     <Component
       {...otherProps}
+      {...customComponent?.props}
       className={classNames(
         'weui-media-box',
         {
