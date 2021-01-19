@@ -11,12 +11,17 @@ export interface BaseMediaBoxProps {
     children?: React.ReactNode;
     extra?: boolean;
   }>;
+  htmlComponent?: 'a' | 'div' | 'label';
+  customComponent?: {
+    component: any;
+    props: any;
+  };
 }
 
 export type AnchorMediaBoxProps = {
   href: string;
 } & BaseMediaBoxProps &
-React.AnchorHTMLAttributes<any>;
+Omit<React.AnchorHTMLAttributes<any>, 'title'>;
 
 export type NativeMediaBoxProps = BaseMediaBoxProps & React.HTMLAttributes<any>;
 
@@ -24,18 +29,27 @@ export type MediaBoxProps = Partial<AnchorMediaBoxProps & BaseMediaBoxProps>;
 
 export const MediaBox: React.FC<MediaBoxProps> = (props) => {
   const {
+    htmlComponent = 'div',
+    customComponent,
     type = 'text',
     title,
     description,
     header,
-    href,
     info,
     className,
     children,
-    ...ontherProps
+    ...otherProps
   } = props;
 
-  const Component = React.useMemo(() => (href ? 'a' : 'div'), [href]);
+  const Component: any = React.useMemo(() => {
+    let c: any;
+    if (customComponent) {
+      c = customComponent.component;
+    } else {
+      c = otherProps.href ? 'a' : htmlComponent;
+    }
+    return c;
+  }, [customComponent, htmlComponent, otherProps.href]);
 
   const titleNode = React.useMemo(() => {
     if (typeof title === 'string') {
@@ -66,7 +80,7 @@ export const MediaBox: React.FC<MediaBoxProps> = (props) => {
 
   return (
     <Component
-      {...ontherProps}
+      {...otherProps}
       className={classNames(
         'weui-media-box',
         {
