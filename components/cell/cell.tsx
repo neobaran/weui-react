@@ -11,6 +11,7 @@ export interface CellItemProps<T>
   label?: React.ReactNode;
   value?: React.ReactNode;
   access?: boolean;
+  link?: boolean;
   htmlComponent?: 'a' | 'div' | 'label';
   customComponent?: {
     component: any;
@@ -41,6 +42,7 @@ function CellItem<T = any>(props: CellItemProps<T>) {
     label,
     value,
     access,
+    link,
     className,
     children,
     ...otherProps
@@ -64,6 +66,7 @@ function CellItem<T = any>(props: CellItemProps<T>) {
         'weui-cell',
         {
           'weui-cell_access': access,
+          'weui-cell_link': link,
         },
         className,
       )}
